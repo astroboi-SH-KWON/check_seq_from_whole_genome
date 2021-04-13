@@ -8,3 +8,17 @@
     4. #freq_align: 1번 spacer sequence를 hg38에 각각 align하여 NRG PAM으로 perfect match되는 locus의 개수
     5. #trscprt_align: #freq_align에서 뽑힌 target site가 "filtered_hg38_refFlat.txt" 파일의 transcript_start, end 좌표 안에 들어가는지 여부 정보
     6. index: "20bp spacer 첫 bp index" - "NRG PAM 끝나는 bp index" : +/- strand 정보 : #trscprt_align에서 조사한transcription 여부
+
+    
+    [result_1]
+    header : 
+    Transposable element	spacer (20 bp)	#duple	#trscprt	#freq_align  #trscprt_align
+    
+    
+    [result_2]
+    header :
+    Transposable element	spacer (20 bp)	index
+
+    
+    column of "index"
+    chr4:186729490-186729513:+:True, chr4:186729490-186729513:+:True,
