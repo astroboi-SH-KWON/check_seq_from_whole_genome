@@ -72,7 +72,7 @@ class LogicPreps(ToolLogicPreps):
     def make_pool_list_to_dict(self, pool_list):
         tot_result_dict = {}
         for tmp_dict in pool_list:
-            for spcr, idx_inf_arr in tmp_dict:
+            for spcr, idx_inf_arr in tmp_dict.items():
                 if spcr in tot_result_dict:
                     tot_result_dict[spcr].extend(idx_inf_arr)
                 else:
