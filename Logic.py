@@ -29,52 +29,57 @@ class Logics(ToolLogics):
                 cnt += 1
         return cnt
 
-    def check_spcr_from_whole_gen_by_chr(self, chr_nm):
-        util = Util.Utils()
-        p_seq, m_seq = util.read_file_by_biopython(self.ref_dir + chr_nm + ".fa", "fasta")
+    def check_spcr_from_whole_gen_by_chr(self, chr_nm_arr):
+        print("st check_spcr_from_whole_gen_by_chr")
         result_dict = {}
-        for i in range(len(p_seq)):
-            p_spacr = p_seq[i: i + self.len_sprcr]
-            m_spacr = m_seq[i: i + self.len_sprcr][::-1]
+        for chr_nm in chr_nm_arr:
+            print("ref :", chr_nm)
+            util = Util.Utils()
+            p_seq, m_seq = util.read_file_by_biopython(self.ref_dir + chr_nm + ".fa", "fasta")
+            for i in range(len(p_seq)):
+                p_spacr = p_seq[i: i + self.len_sprcr]
+                m_spacr = m_seq[i: i + self.len_sprcr][::-1]
 
-            if "N" in p_spacr or "N" in m_spacr:
-                continue
+                if "N" in p_spacr or "N" in m_spacr:
+                    continue
 
-            if p_spacr in self.spacer_info_dict:
-                p_pam = p_seq[i + self.len_sprcr: i + self.len_sprcr + len(self.pam_rule)]
-                if "N" not in p_pam:
-                    if self.match(0, p_pam, self.pam_rule):
-                        st_pos = i
-                        en_pos = i + self.len_sprcr + len(self.pam_rule)
-                        if self.is_trnscprted(st_pos, en_pos, self.trncrpt_rgin_dict[chr_nm]):
-                            if p_spacr in result_dict:
-                                result_dict[p_spacr].append(chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":+:True")
+                if p_spacr in self.spacer_info_dict:
+                    p_pam = p_seq[i + self.len_sprcr: i + self.len_sprcr + len(self.pam_rule)]
+                    if "N" not in p_pam:
+                        if self.match(0, p_pam, self.pam_rule):
+                            st_pos = i
+                            en_pos = i + self.len_sprcr + len(self.pam_rule)
+                            if self.is_trnscprted(st_pos, en_pos, self.trncrpt_rgin_dict[chr_nm]):
+                                if p_spacr in result_dict:
+                                    result_dict[p_spacr].append(chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":+:True")
+                                else:
+                                    result_dict.update(
+                                        {p_spacr: [chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":+:True"]})
                             else:
-                                result_dict.update(
-                                    {p_spacr: [chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":+:True"]})
-                        else:
-                            if p_spacr in result_dict:
-                                result_dict[p_spacr].append(chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":+:False")
-                            else:
-                                result_dict.update(
-                                    {p_spacr: [chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":+:False"]})
+                                if p_spacr in result_dict:
+                                    result_dict[p_spacr].append(chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":+:False")
+                                else:
+                                    result_dict.update(
+                                        {p_spacr: [chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":+:False"]})
 
-            if m_spacr in self.spacer_info_dict:
-                m_pam = m_seq[i - len(self.pam_rule): i][::-1]
-                if "N" not in m_pam:
-                    if self.match(0, m_pam, self.pam_rule):
-                        st_pos = i - len(self.pam_rule)
-                        en_pos = i + self.len_sprcr
-                        if self.is_trnscprted(st_pos, en_pos, self.trncrpt_rgin_dict[chr_nm]):
-                            if m_spacr in result_dict:
-                                result_dict[m_spacr].append(chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":-:True")
+                if m_spacr in self.spacer_info_dict:
+                    m_pam = m_seq[i - len(self.pam_rule): i][::-1]
+                    if "N" not in m_pam:
+                        if self.match(0, m_pam, self.pam_rule):
+                            st_pos = i - len(self.pam_rule)
+                            en_pos = i + self.len_sprcr
+                            if self.is_trnscprted(st_pos, en_pos, self.trncrpt_rgin_dict[chr_nm]):
+                                if m_spacr in result_dict:
+                                    result_dict[m_spacr].append(chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":-:True")
+                                else:
+                                    result_dict.update(
+                                        {m_spacr: [chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":-:True"]})
                             else:
-                                result_dict.update(
-                                    {m_spacr: [chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":-:True"]})
-                        else:
-                            if m_spacr in result_dict:
-                                result_dict[m_spacr].append(chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":-:False")
-                            else:
-                                result_dict.update(
-                                    {m_spacr: [chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":-:False"]})
+                                if m_spacr in result_dict:
+                                    result_dict[m_spacr].append(chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":-:False")
+                                else:
+                                    result_dict.update(
+                                        {m_spacr: [chr_nm + ":" + str(st_pos) + "-" + str(en_pos) + ":-:False"]})
+            print("DONE ref :", chr_nm)
+        print("DONE check_spcr_from_whole_gen_by_chr")
         return result_dict
