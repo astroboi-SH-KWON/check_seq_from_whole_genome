@@ -79,11 +79,11 @@ def multi_process():
         result_2_list = logic_prep.sort_list_by_ele(result_2_list, 0, False)
 
         header = ["Transposable element", "spacer (20 bp)", "#duple", "#trscprt", "#freq_align", "#trscprt_align"]
-        util.make_tsv(WORK_DIR + OU + spcr_fl.replace(".csv", "") + "result_1_list.txt", header, result_1_list)
+        util.make_tsv(WORK_DIR + OU + spcr_fl.replace(".csv", "") + "_result_1_list.txt", header, result_1_list)
         result_1_list.clear()
 
         header = ["Transposable element", "spacer (20 bp)", "index"]
-        util.make_tsv(WORK_DIR + OU + spcr_fl.replace(".csv", "") + "result_2_list.txt", header, result_2_list)
+        util.make_tsv(WORK_DIR + OU + spcr_fl.replace(".csv", "") + "_result_2_list.txt", header, result_2_list)
         result_2_list.clear()
 
 
